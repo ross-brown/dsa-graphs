@@ -16,23 +16,41 @@ class Graph {
   }
 
   /** add Node instance and add it to nodes property on graph. */
-  addNode(node) { }
+  addNode(node) {
+    this.nodes.add(node);
+  }
 
   /** add array of new Node instances and adds to them to nodes property. */
-  addNodes(nodeArray) { }
+  addNodes(nodeArray) {
+    for (let node of nodeArray) {
+      this.nodes.add(node);
+    }
+  }
 
   /** add edge between nodes n1,n2 */
-  addEdge(n1, n2) { }
+  addEdge(n1, n2) {
+    n1.adjacent.add(n2);
+    n2.adjacent.add(n1);
+  }
 
   /** remove edge between nodes n1,n2 */
-  removeEdge(n1, n2) { }
+  removeEdge(n1, n2) {
+    n1.adjacent.delete(n2);
+    n2.adjacent.delete(n1);
+  }
 
   /** remove node from graph:
    *
    * - remove it from nodes property of graph
    * - update any adjacency lists using that node
    */
-  removeNode(node) { }
+  removeNode(node) {
+    this.nodes.delete(node);
+
+    for (let neighbor of node.adjacent) {
+      neighbor.adjacent.delete(node);
+    }
+  }
 
   /** traverse graph with DFS and returns array of Node values */
   depthFirstSearch(start) { }
@@ -44,4 +62,4 @@ class Graph {
   distanceOfShortestPath(start, end) { }
 }
 
-module.exports = { Graph, Node }
+module.exports = { Graph, Node };
