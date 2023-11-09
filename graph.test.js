@@ -285,27 +285,78 @@ describe("distanceOfShortestPath", function () {
     //                |
     //                M
     //
+    // build complex graph
+    //
+    //                       Q --P -- S
+    //                      /  \ |      \
+    //                     R     X  ---  U
+    //                     | \   |  \   /
+    //                     |  \  |    V
+    //                      \    Y    |
+    //                       \     \  /
+    //                         T --- W
+    //
+    let graph2 = new Graph();
+    let S = new Node("S");
+    let P = new Node("P");
+    let U = new Node("U");
+    let X = new Node("X");
+    let Q = new Node("Q");
+    let Y = new Node("Y");
+    let V = new Node("V");
+    let R = new Node("R");
+    let W = new Node("W");
+    let T = new Node("T");
 
-    let graph = new Graph();
+    graph2.addNodes([S, P, U, X, Q, Y, V, R, W, T]);
 
-    let r = new Node("R");
-    let i = new Node("I");
-    let t = new Node("T");
-    let h = new Node("H");
-    let m = new Node("M");
+    graph2.addEdge(S, P);
+    graph2.addEdge(S, U);
 
-    graph.addNodes([r, i, t, h, m]);
+    graph2.addEdge(P, X);
+    graph2.addEdge(U, X);
 
-    graph.addEdge(r, i);
-    graph.addEdge(r, t);
-    graph.addEdge(r, h);
-    graph.addEdge(i, t);
-    graph.addEdge(t, h);
-    graph.addEdge(h, m);
+    graph2.addEdge(P, Q);
+    graph2.addEdge(U, V);
 
-    expect(graph.distanceOfShortestPath(r, m)).toBe(2);
-    expect(graph.distanceOfShortestPath(t, r)).toBe(1);
-    expect(graph.distanceOfShortestPath(t, m)).toBe(2);
-    expect(graph.distanceOfShortestPath(t, "rogue node")).toBe(undefined);
+    graph2.addEdge(X, Q);
+    graph2.addEdge(X, Y);
+    graph2.addEdge(X, V);
+
+    graph2.addEdge(Q, R);
+    graph2.addEdge(Y, R);
+
+    graph2.addEdge(Y, W);
+    graph2.addEdge(V, W);
+
+    graph2.addEdge(R, T);
+    graph2.addEdge(W, T);
+
+    expect(graph2.distanceOfShortestPath(Q, T)).toBe(2);
+    expect(graph2.distanceOfShortestPath(Q, V)).toBe(2);
+    expect(graph2.distanceOfShortestPath(V, T)).toBe(2);
+    expect(graph2.distanceOfShortestPath(Q, "rogue node")).toBe(undefined);
+
+    // let graph = new Graph();
+
+    // let r = new Node("R");
+    // let i = new Node("I");
+    // let t = new Node("T");
+    // let h = new Node("H");
+    // let m = new Node("M");
+
+    // graph.addNodes([r, i, t, h, m]);
+
+    // graph.addEdge(r, i);
+    // graph.addEdge(r, t);
+    // graph.addEdge(r, h);
+    // graph.addEdge(i, t);
+    // graph.addEdge(t, h);
+    // graph.addEdge(h, m);
+
+    // expect(graph.distanceOfShortestPath(r, m)).toBe(2);
+    // expect(graph.distanceOfShortestPath(t, r)).toBe(1);
+    // expect(graph.distanceOfShortestPath(t, m)).toBe(2);
+    // expect(graph.distanceOfShortestPath(t, "rogue node")).toBe(undefined);
   });
 });

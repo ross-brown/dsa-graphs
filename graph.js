@@ -53,36 +53,36 @@ class Graph {
   }
 
   /** traverse graph with DFS and returns array of Node values */
-  depthFirstSearch(start, seen = new Set([start]), output = []) {
-    // if all adjacent seen, stop recursing
-    output.push(start.value);
+  depthFirstSearch(start) {
+    // // if all adjacent seen, stop recursing
+    // output.push(start.value);
 
-    for (const neighbor of start.adjacent) {
-      if (!seen.has(neighbor)) {
-        seen.add(neighbor);
-        this.depthFirstSearch(neighbor, seen, output);
-      }
-    }
-
-    return output;
-
-    // let visitStack = [start];
-    // let seen = new Set(visitStack);
-    // const output = [];
-
-    // while (visitStack.length) {
-    //   const current = visitStack.pop();
-    //   output.push(current.value);
-
-    //   for (const neighbor of current.adjacent) {
-    //     if (!seen.has(neighbor)) {
-    //       seen.add(neighbor);
-    //       visitStack.push(neighbor);
-    //     }
+    // for (const neighbor of start.adjacent) {
+    //   if (!seen.has(neighbor)) {
+    //     seen.add(neighbor);
+    //     this.depthFirstSearch(neighbor, seen, output);
     //   }
     // }
 
     // return output;
+
+    let visitStack = [start];
+    let seen = new Set(visitStack);
+    const output = [];
+
+    while (visitStack.length) {
+      const current = visitStack.pop();
+      output.push(current.value);
+
+      for (const neighbor of current.adjacent) {
+        if (!seen.has(neighbor)) {
+          seen.add(neighbor);
+          visitStack.push(neighbor);
+        }
+      }
+    }
+
+    return output;
   }
 
   /** traverse graph with BDS and returns array of Node values */
@@ -108,12 +108,19 @@ class Graph {
 
   /** find the distance of the shortest path from the start node to the end node */
   distanceOfShortestPath(start, end) {
-    const BFSvalues = this.breadthFirstSearch(start);
-    const DFSvalues = this.depthFirstSearch(start);
+    let visitQueue = [[start, 0]];
+    let seen = new Set(visitQueue);
 
-    for (let distance = 0; distance < BFSvalues.length; distance++) {
-      if (BFSvalues[distance] === end.value
-        || DFSvalues[distance] === end.value) return distance;
+    while (visitQueue.length) {
+      let [node, distance] = visitQueue.shift();
+      if (node === end) return distance;
+
+      for (let neighbor of node.adjacent) {
+        if (!seen.has(neighbor)) {
+          seen.add(neighbor);
+          visitQueue.push([neighbor, distance + 1]);
+        }
+      }
     }
   }
 
