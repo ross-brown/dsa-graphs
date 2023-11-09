@@ -53,14 +53,14 @@ class Graph {
   }
 
   /** traverse graph with DFS and returns array of Node values */
-  depthFirstSearch(start, seen=new Set([start]), output=[]) {
+  depthFirstSearch(start, seen = new Set([start]), output = []) {
     // if all adjacent seen, stop recursing
     output.push(start.value);
 
     for (const neighbor of start.adjacent) {
       if (!seen.has(neighbor)) {
         seen.add(neighbor);
-        output.push(...this.depthFirstSearch(neighbor, seen, output));
+        this.depthFirstSearch(neighbor, seen, output);
       }
     }
 
@@ -72,7 +72,7 @@ class Graph {
 
     // while (visitStack.length) {
     //   const current = visitStack.pop();
-    //   output.push(current.value)
+    //   output.push(current.value);
 
     //   for (const neighbor of current.adjacent) {
     //     if (!seen.has(neighbor)) {
@@ -93,7 +93,7 @@ class Graph {
 
     while (visitQueue.length) {
       const current = visitQueue.shift();
-      output.push(current.value)
+      output.push(current.value);
 
       for (const neighbor of current.adjacent) {
         if (!seen.has(neighbor)) {
@@ -108,8 +108,15 @@ class Graph {
 
   /** find the distance of the shortest path from the start node to the end node */
   distanceOfShortestPath(start, end) {
+    const BFSvalues = this.breadthFirstSearch(start);
+    const DFSvalues = this.depthFirstSearch(start);
 
+    for (let distance = 0; distance < BFSvalues.length; distance++) {
+      if (BFSvalues[distance] === end.value
+        || DFSvalues[distance] === end.value) return distance;
+    }
   }
+
 }
 
 module.exports = { Graph, Node };
