@@ -53,13 +53,63 @@ class Graph {
   }
 
   /** traverse graph with DFS and returns array of Node values */
-  depthFirstSearch(start) { }
+  depthFirstSearch(start, seen=new Set([start]), output=[]) {
+    // if all adjacent seen, stop recursing
+    output.push(start.value);
+
+    for (const neighbor of start.adjacent) {
+      if (!seen.has(neighbor)) {
+        seen.add(neighbor);
+        output.push(...this.depthFirstSearch(neighbor, seen, output));
+      }
+    }
+
+    return output;
+
+    // let visitStack = [start];
+    // let seen = new Set(visitStack);
+    // const output = [];
+
+    // while (visitStack.length) {
+    //   const current = visitStack.pop();
+    //   output.push(current.value)
+
+    //   for (const neighbor of current.adjacent) {
+    //     if (!seen.has(neighbor)) {
+    //       seen.add(neighbor);
+    //       visitStack.push(neighbor);
+    //     }
+    //   }
+    // }
+
+    // return output;
+  }
 
   /** traverse graph with BDS and returns array of Node values */
-  breadthFirstSearch(start) { }
+  breadthFirstSearch(start) {
+    let visitQueue = [start];
+    let seen = new Set(visitQueue);
+    const output = [];
+
+    while (visitQueue.length) {
+      const current = visitQueue.shift();
+      output.push(current.value)
+
+      for (const neighbor of current.adjacent) {
+        if (!seen.has(neighbor)) {
+          seen.add(neighbor);
+          visitQueue.push(neighbor);
+        }
+      }
+    }
+
+    return output;
+  }
 
   /** find the distance of the shortest path from the start node to the end node */
-  distanceOfShortestPath(start, end) { }
+  distanceOfShortestPath(start, end) {
+
+  }
 }
 
 module.exports = { Graph, Node };
